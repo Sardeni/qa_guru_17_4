@@ -1,0 +1,27 @@
+plugins {
+    id 'java-library'
+}
+
+group 'com.sard'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+dependencies {
+    testImplementation (
+            "com.codeborne:selenide:6.10.3",
+            "org.junit.jupiter:junit-jupiter:5.9.1")
+
+    testRuntimeOnly (
+            "org.slf4j:slf4j-simple:2.0.5"
+    )
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+test {
+    useJUnitPlatform()
+}
