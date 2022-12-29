@@ -1,6 +1,4 @@
 import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.selector.ByText;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +8,6 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
 
-
 public class StudentRegistrationFormTest {
 
     @BeforeAll
@@ -18,7 +15,6 @@ public class StudentRegistrationFormTest {
         Configuration.browserSize = "1920x1080";
         Configuration.baseUrl = "https://demoqa.com";
     }
-
     @Test
     void studentRegistrationFormTest() {
         String name = "Pavel";
@@ -26,9 +22,15 @@ public class StudentRegistrationFormTest {
         String email = "pavel@gmail.com";
         String phoneNumber = "1234567891";
         String currentAddress = "Tbilsi, 16 Metekhi Street";
+        String gender = "Male";
+        String dateOfBirth = "5 May,1987";
+        String subject = "Computer Science";
+        String hobbies = "Sports, Reading";
+        String pictureFIleName = "brad_pitt.png";
+        String stateAndCity = "NCR Noida";
 
         open("/automation-practice-form");
-        $(".practice-form-appear").shouldHave(text("Student Registration form"));
+        $(".practice-form-wrapper").shouldHave(text("Student Registration form"));
         executeJavaScript("$('#fixedban').remove()");
         executeJavaScript("$('footer').remove()");
 
@@ -37,13 +39,13 @@ public class StudentRegistrationFormTest {
         $("#userEmail").setValue(email);
         $("#genterWrapper").$(byText("Male")).click();
         $("#userNumber").setValue(phoneNumber);
-        $("[#dateOfBirthInput]").click();
-        $(".class=react-datepicker__month-select").selectOption("May");
+        $("#dateOfBirthInput").click();
+        $(".react-datepicker__month-select").selectOption("May");
         $(".react-datepicker__year-select").selectOption("1987");
         $(".react-datepicker__day--005:not(.react-datepicker__day--outside-month)").click();
         $("#subjectsInput").setValue("Computer Science").pressEnter();
-        $("#hobbies-checkbox-1").click();
-        $("#hobbies-checkbox-2").click();
+        $("#hobbiesWrapper").$(byText("Sports")).click();
+        $("#hobbiesWrapper").$(byText("Reading")).click();
         $("#uploadPicture").uploadFromClasspath("images/brad_pitt.png");
         $("#currentAddress").setValue(currentAddress);
         $("#state").click();
@@ -52,8 +54,11 @@ public class StudentRegistrationFormTest {
         $("#stateCity-wrapper").$(byText("Noida")).click();
         $("#submit").click();
 
-        $(".modal-dialog modal-lg").should(appear);
+        $(".modal-content").should(appear);
         $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
-        $(".modal-body").shouldHave(text(name + " " + lastName), (text(email)) );
+        $(".modal-body").shouldHave(text(name + " " + lastName), (text(email)),
+                (text(phoneNumber)), (text(currentAddress)), (text(gender)),
+                (text(dateOfBirth)), (text(subject)), (text(hobbies)),
+                (text(hobbies)), (text(pictureFIleName)), (text(stateAndCity)));
     }
 }
